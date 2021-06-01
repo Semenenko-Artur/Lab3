@@ -1,0 +1,119 @@
+CREATE TABLE Актер (ID INTEGER PRIMARY KEY,
+ФИО VARCHAR(50),
+Дата_Рождения DATETIME CHECK(Дата_Рождения < Дата_смерти or Дата_смерти==NULL),
+Дата_смерти DATETIME);
+
+CREATE TABLE Актер_Фильм(
+   Название_фильма varchar(30),
+   ID INTEGER,
+   FOREIGN KEY (Название_фильма) 
+      REFERENCES Фильм (Название) 
+         ON DELETE CASCADE 
+         ON UPDATE NO ACTION,
+   FOREIGN KEY (ID) 
+      REFERENCES Актер (ID) 
+         ON DELETE CASCADE 
+         ON UPDATE NO ACTION
+);
+
+CREATE TABLE Жанр (Название VARCHAR(30)PRIMARY KEY);
+
+CREATE TABLE Жанр_актеров(
+   Название_жанра varchar(30),
+   ID_Актера INTEGER,
+   FOREIGN KEY (Название_жанра) 
+      REFERENCES Жанр (Название) 
+         ON DELETE CASCADE 
+         ON UPDATE NO ACTION,
+   FOREIGN KEY (ID_Актера) 
+      REFERENCES Актер (ID) 
+         ON DELETE CASCADE 
+         ON UPDATE NO ACTION
+);
+
+CREATE TABLE Жанр_фильма(
+   Название_фильма varchar(30),
+   Название_жанра varchar(30),
+   FOREIGN KEY (Название_фильма) 
+      REFERENCES Фильм (Название) 
+         ON DELETE CASCADE 
+         ON UPDATE NO ACTION,
+   FOREIGN KEY (Название_жанра) 
+      REFERENCES Жанр (Название) 
+         ON DELETE CASCADE 
+         ON UPDATE NO ACTION
+);
+
+CREATE TABLE Оценка_рецензии(
+   ID_Рецензии INTEGER ,
+   Балл FLOAT CHECK(Балл <= 5 and Балл >=1 ==NULL),
+   Никнейм_пользователя VARCHAR(50),
+   FOREIGN KEY (ID_Рецензии) 
+      REFERENCES Рецензия (ID_Рецензии) 
+         ON DELETE CASCADE 
+         ON UPDATE NO ACTION,
+   FOREIGN KEY (Никнейм_пользователя) 
+      REFERENCES Пользователь (Никнейм_пользователя) 
+         ON DELETE CASCADE 
+         ON UPDATE NO ACTION
+);
+
+CREATE TABLE Пользователь (Никнейм_пользователя VARCHAR(50) PRIMARY KEY);
+
+CREATE TABLE Режиссер(ID_Regis 
+INTEGER PRIMARY KEY,
+ФИО VARCHAR(50));
+
+CREATE TABLE Рецензия(
+   ID_Рецензии INTEGER PRIMARY KEY NOT NULL,
+   Оценка FLOAT CHECK (Оценка > 1 and Оценка < 10),
+   Спойлер VARCHAR(50),
+   Название VARCHAR(50),
+   Название_фильма VARCHAR(30),
+   Год_фильма INTEGER,
+   Никнейм_пользователя VARCHAR(50),
+   FOREIGN KEY (Название_фильма) 
+      REFERENCES Фильм (Название) 
+         ON DELETE CASCADE 
+         ON UPDATE NO ACTION,
+   FOREIGN KEY (Никнейм_пользователя) 
+      REFERENCES Пользователь (Никнейм_пользователя) 
+         ON DELETE CASCADE 
+         ON UPDATE NO ACTION
+);
+
+CREATE TABLE Страна(Название
+VARCHAR(30) PRIMARY KEY)
+
+CREATE TABLE Страна_производ(
+   Название_фильма varchar(30),
+   Название_страны varchar(30),
+   Год INTEGER,
+   FOREIGN KEY (Название_фильма) 
+      REFERENCES Фильм (Название) 
+         ON DELETE CASCADE 
+         ON UPDATE NO ACTION,
+   FOREIGN KEY (Название_страны) 
+      REFERENCES Страна (Название) 
+         ON DELETE CASCADE 
+         ON UPDATE NO ACTION
+);
+
+CREATE TABLE Фильм (
+Название VARCHAR(30)PRIMARY KEY,
+Рейтинг FLOAT CHECK(Рейтинг > 1 and Рейтинг < 10),
+Год INTEGER);
+
+CREATE TABLE Фильм_режиссер(
+   Название_фильма varchar(30),
+   ID_Regis INTEGER,
+   Год_фильма INTEGER,
+   FOREIGN KEY (Название_фильма) 
+      REFERENCES Фильм (Название) 
+         ON DELETE CASCADE 
+         ON UPDATE NO ACTION,
+   FOREIGN KEY (ID_Regis) 
+      REFERENCES Режиссер (ID_Regis) 
+         ON DELETE CASCADE 
+         ON UPDATE NO ACTION
+);
